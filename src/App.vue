@@ -79,10 +79,7 @@ ul {
   display: grid;
   grid-template-columns: auto auto auto;
   text-align: center;
-}
-
-li {
-  grid-template-rows: auto auto;
+  padding: 2em
 }
 
 img {
@@ -90,5 +87,11 @@ img {
   width: 15em;
   height: 15em;
   border-radius: 50%;
+}
+
+@media (max-width: 700px) {
+  ul {
+    grid-template-columns: auto;
+  }
 }
 </style>
