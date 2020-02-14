@@ -4,6 +4,9 @@
     <ul>
       <li v-for="brother in brothers" :key="brother.id">
         <div class="brother__pic">
+          <img v-if="brother.lider" class="brother__icon" src="https://gshow.especiaisgshow.globo/realities/bbb20/central-de-monitoramento/static/media/liderIcon.9af0d9f6.svg" alt="">
+          <img v-if="brother.anjo" class="brother__icon" src="https://gshow.especiaisgshow.globo/realities/bbb20/central-de-monitoramento/static/media/anjoIcon.c77215ce.svg" alt="">
+          <img v-if="brother.monstro" class="brother__icon" src="./assets/scary.svg" alt="">
           <span v-if="brother.status === 'OUT'" :style="isOut(brother)"></span>
           <img :src="brother.picture" alt="">
         </div>
@@ -20,6 +23,7 @@
         </div>
       </li>
     </ul>
+    <div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
   </div>
 </template>
 
@@ -93,5 +97,11 @@ img {
   ul {
     grid-template-columns: auto;
   }
+}
+
+.brother__icon {
+  position: absolute;
+  width: 4em;
+  height: 4em;
 }
 </style>
