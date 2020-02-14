@@ -2,7 +2,7 @@
   <div id="app">
     <h1>Contador de Estalecas - BBB20</h1>
     <ul>
-      <li v-for="brother in orderedBrothers()" :key="brother.id">
+      <li v-for="brother in brothers" :key="brother.id">
         <div class="brother__pic">
           <span v-if="brother.status === 'OUT'" :style="isOut(brother)"></span>
           <img :src="brother.picture" alt="">
@@ -41,16 +41,13 @@ export default {
         position: 'absolute',
         borderRadius: '50%'
       }
-    },
-    orderedBrothers () {
-      return this.brothers.sort((a, b) => (-1 * a.balance) - (-1* b.balance))
     }
   },
   created () {
     this.isMounted = true
     axios.get(`${process.env.VUE_APP_HOST}/bbb`)
       .then(response => {
-        this.brothers = response.data
+        this.brothers = response.data.sort((a, b) => (-1 * a.balance) - (-1* b.balance))
       })
       .catch(error => {
         console.log(error)
