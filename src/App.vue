@@ -1,12 +1,31 @@
 <template>
   <div id="app">
-    <h1>Contador de Estalecas - BBB20</h1>
+    <h1>Jogadores na Casa - BBB20</h1>
     <ul>
-      <li v-for="brother in brothers" :key="brother.id">
+      <li v-for="brother in brothersIn" :key="brother.id">
         <div class="brother__pic">
           <img v-if="brother.lider" class="brother__icon" src="https://gshow.especiaisgshow.globo/realities/bbb20/central-de-monitoramento/static/media/liderIcon.9af0d9f6.svg" alt="">
           <img v-if="brother.anjo" class="brother__icon" src="https://gshow.especiaisgshow.globo/realities/bbb20/central-de-monitoramento/static/media/anjoIcon.c77215ce.svg" alt="">
           <img v-if="brother.monstro" class="brother__icon" src="./assets/scary.svg" alt="">
+          <img :src="brother.picture" alt="">
+        </div>
+        <div class="brother__info">
+          <p>
+            Nome: {{brother.name}}
+          </p>
+          <p>
+            Estalecas: {{brother.balance}}
+          </p>
+          <p>
+            Grupo: {{brother.group}}
+          </p>
+        </div>
+      </li>
+    </ul>
+    <h1>Eliminados - BBB20</h1>
+    <ul>
+      <li v-for="brother in brothersOut" :key="brother.id">
+        <div class="brother__pic">
           <span v-if="brother.status === 'OUT'" :style="isOut(brother)"></span>
           <img :src="brother.picture" alt="">
         </div>
@@ -33,7 +52,9 @@ import axios from 'axios'
 export default {
   name: 'App',
   data: () => ({
-    brothers: [],
+    brothersIn: [],
+    brothersOut: [],
+    allBrothers: [],
     isMounted: false
   }),
   methods: {
@@ -51,7 +72,9 @@ export default {
     this.isMounted = true
     axios.get(`${process.env.VUE_APP_HOST}/bbb`)
       .then(response => {
-        this.brothers = response.data.sort((a, b) => (-1 * a.balance) - (-1* b.balance))
+        this.allBrothers = response.data.sort((a, b) => (-1 * a.balance) - (-1* b.balance))
+        this.brothersOut = this.allBrothers.filter(brother => brother.status === 'OUT')
+        this.brothersIn = this.allBrothers.filter(brother => brother.status !== 'OUT')
       })
       .catch(error => {
         console.log(error)
