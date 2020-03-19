@@ -1,5 +1,32 @@
 <template>
   <div id="app">
+    <h1>VIP & XEPA INFOS</h1>
+    <header class="brother__header">
+      <div></div>
+      <section class="brother__header-xepa">
+        <h2>
+          XEPA
+        </h2>
+        <h3>
+          Estalecas: {{xepaBalance}}
+        </h3>
+        <h4>
+          Quantidade Pessoas: {{brothersInXepa.length}}
+        </h4>
+      </section>
+      <section class="brother__header-vip">
+        <h2>
+          VIP
+        </h2>
+        <h3>
+          Estalecas: {{vipBalance}}
+        </h3>
+        <h4>
+          Quantidade Pessoas: {{brothersInVip.length}}
+        </h4>
+      </section>
+      <div></div>
+    </header>
     <h1>Jogadores na Casa - BBB20</h1>
     <ul>
       <li v-for="brother in brothersIn" :key="brother.id">
@@ -54,7 +81,11 @@ export default {
   data: () => ({
     brothersIn: [],
     brothersOut: [],
+    brothersInXepa: [],
+    brothersInVip: [],
     allBrothers: [],
+    xepaBalance: 0,
+    vipBalance: 0,
     isMounted: false
   }),
   methods: {
@@ -66,6 +97,16 @@ export default {
         position: 'absolute',
         borderRadius: '50%'
       }
+    },
+    xepaBalanceSum () {
+      this.brothersInXepa.forEach( brother => {
+        this.xepaBalance += brother.balance
+      })
+    },
+    vipBalanceSum () {
+      this.brothersInVip.forEach( brother => {
+        this.vipBalance += brother.balance
+      })
     }
   },
   created () {
@@ -75,6 +116,10 @@ export default {
         this.allBrothers = response.data.sort((a, b) => (-1 * a.balance) - (-1* b.balance))
         this.brothersOut = this.allBrothers.filter(brother => brother.status === 'OUT')
         this.brothersIn = this.allBrothers.filter(brother => brother.status !== 'OUT')
+        this.brothersInXepa = this.allBrothers.filter(brother => brother.status !== 'OUT' && brother.group === 'XEPA')
+        this.brothersInVip = this.allBrothers.filter(brother => brother.status !== 'OUT' && brother.group === 'VIP')
+        this.xepaBalanceSum()
+        this.vipBalanceSum()
       })
       .catch(error => {
         console.log(error)
@@ -126,5 +171,15 @@ img {
   position: absolute;
   width: 4em;
   height: 4em;
+}
+
+.brother__header {
+  display: grid;
+  text-align: center;
+  grid-template-columns: auto 0.2fr 0.2fr auto;
+}
+
+.brother__header-xepa {
+  grid-template-rows: auto auto;
 }
 </style>
